@@ -27,7 +27,7 @@ const UserProfileModal = ({ open, setOpen, user }: UserProfileModalProps) => {
   const { onTransactionCallback, createStorageRef, createDocRef } =
     useTransaction();
   const [onTransaction, { loading }] = onTransactionCallback();
-  const { deleteFileAsync } = useStorage()
+  const { deleteFileAsync } = useStorage();
   const [changeFile, setChangeFile] = useState(false);
 
   useEffect(() => {
@@ -63,18 +63,17 @@ const UserProfileModal = ({ open, setOpen, user }: UserProfileModalProps) => {
     e.preventDefault();
     onTransaction({
       async onRun({ storage, firestore }) {
-        console.log(user?.uid);
-        const ref = createStorageRef("avatar/" + user?.uid as string);
-        let downloadURL = "";
+        const ref = createStorageRef(("avatar/" + user?.uid) as string);
+        let downloadURL: any = null;
         if (changeFile) {
           const { error } = await deleteFileAsync(ref);
           const fileImage = await dataURLtoFile(photoURL, "file name");
           downloadURL = await storage.uploadFile(ref, fileImage);
         }
         const doc = createDocRef("users", user?.uid as string);
-        await firestore.setDoc(doc, {
+        await firestore.updateDoc(doc, {
           displayName: handleDisplayName(displayName),
-          photoURL: downloadURL,
+          photoURL: downloadURL ? downloadURL : user?.photoURL,
         });
         window.location.reload();
       },

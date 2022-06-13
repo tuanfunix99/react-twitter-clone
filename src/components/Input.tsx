@@ -101,7 +101,7 @@ const Input = ({ user }: InputProps) => {
       <img
         src={user?.photoURL as string}
         alt="avatar"
-        className="hidden md:flex rounded-full cursor-pointer h-11 w-11"
+        className="hidden rounded-full cursor-pointer md:flex h-11 w-11"
       />
       <div className="w-full divide-y divide-gray-700">
         <div className={`${selectedFile && "mb-7"}`}>
