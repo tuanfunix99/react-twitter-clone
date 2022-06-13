@@ -36,6 +36,7 @@ const Home = () => {
             uid: id,
             displayName: handleDisplayName(user.displayName as string),
             photoURL: user.photoURL ? user.photoURL : null,
+            email: user?.email
           });
         }
       },

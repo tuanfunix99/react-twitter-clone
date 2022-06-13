@@ -56,6 +56,7 @@ const Register = ({ setIsLogin }: RegisterProps) => {
         await firestore.setDoc(doc, {
           displayName: handleDisplayName(displayName),
           photoURL: downloadURL,
+          email: user.email
         });
         await auth.sendEmailVerification(au);
         setIsLogin(true);

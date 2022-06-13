@@ -55,7 +55,7 @@ const Posts = ({ user }: PostsProps) => {
       });
     } else {
       return (
-        <div className="text-white text-xl text-center my-5">
+        <div className="my-5 text-xl text-center text-white">
           No post found.
         </div>
       );
@@ -82,8 +82,7 @@ const Posts = ({ user }: PostsProps) => {
             return;
           }
           localStorage.setItem("page", page.toString());
-        },
-        onError(error) {},
+        }
       });
     }
   };
@@ -91,14 +90,14 @@ const Posts = ({ user }: PostsProps) => {
   return (
     <Fragment>
       {loading && (
-        <div className="flex flex-col text-center justify-center mt-2">
+        <div className="flex flex-col justify-center mt-2 text-center">
           <Spinner />
         </div>
       )}
       {!loading && (
         <Fragment>
           <div>{displayPosts()}</div>
-          <div className="flex justify-center text-center my-5">
+          <div className="flex justify-center my-5 text-center">
             {loadingMore && <Spinner />}
             {!loadingMore && !endPage && posts.length > 0 && (
               <Button color="dark" outline={true} onClick={onLoadMorePost}>

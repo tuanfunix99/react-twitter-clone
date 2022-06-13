@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "flowbite-react";
 import Login from "./Login";
 import Register from "./Register";
+import ResetPassword from "./ResetPassword";
 
 interface AuthModalProps {
   open: boolean;
@@ -10,22 +11,39 @@ interface AuthModalProps {
 
 const AuthModal = ({ open, onClose }: AuthModalProps) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isReset, setIsReset] = useState(false);
 
   const setIsLoginHandler = (val: boolean) => {
     setIsLogin(val);
   };
 
+  const setIsResetHandler = (val: boolean) => {
+    setIsReset(val);
+  };
+
+  const onCloseHandler = () => {
+    onClose();
+    setIsLogin(true);
+    setIsReset(false);
+  };
+
   return (
-    <Modal
-      show={open}
-      size="md"
-      popup={true}
-      onClose={onClose}
-    >
+    <Modal show={open} size="md" popup={true} onClose={onCloseHandler}>
       <Modal.Header />
       <Modal.Body>
-        {isLogin && <Login setIsLogin={setIsLoginHandler} />}
-        {!isLogin && <Register setIsLogin={setIsLoginHandler} />}
+        {isReset && (
+          <ResetPassword
+            setIsReset={setIsResetHandler}
+            setIsLogin={setIsLoginHandler}
+          />
+        )}
+        {!isReset && isLogin && (
+          <Login
+            setIsReset={setIsResetHandler}
+            setIsLogin={setIsLoginHandler}
+          />
+        )}
+        {!isReset && !isLogin && <Register setIsLogin={setIsLoginHandler} />}
       </Modal.Body>
     </Modal>
   );

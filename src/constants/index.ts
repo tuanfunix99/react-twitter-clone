@@ -1,2 +1,2 @@
 
-export const LIMIT_PAGE = 3;
+export const LIMIT_PAGE = 5;

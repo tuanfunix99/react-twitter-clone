@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
   setIsLogin: (val: boolean) => void;
+  setIsReset: (val: boolean) => void;
 }
 
-const Login = ({ setIsLogin }: LoginProps) => {
+const Login = ({ setIsLogin, setIsReset }: LoginProps) => {
   const [error, setError] = useState<any>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,8 +77,8 @@ const Login = ({ setIsLogin }: LoginProps) => {
         </div>
         <div className="flex justify-between">
           <a
-            href="/modal"
-            className="text-sm text-blue-700 hover:underline dark:text-blue-500"
+            onClick={() => setIsReset(true)}
+            className="text-sm text-blue-700 hover:underline dark:text-blue-500 cursor-pointer"
           >
             Lost Password?
           </a>
