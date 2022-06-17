@@ -35,18 +35,24 @@ const Posts = ({ user }: PostsProps) => {
         page: 1,
         limit: LIMIT_PAGE,
         orderBy: [["createdAt", "desc"]],
+        // where: [["userId", "==", user?.uid]]
       },
       onCompleted(data) {
         const postDocs = mapToDocumentData<Omit<Post, "id">>(data.docs);
         const posts = mapToPost(postDocs);
         setPosts(posts);
+        if (posts.length <= LIMIT_PAGE) {
+          setEndpage(true);
+          return;
+        }
         setEndpage(false);
       },
       onError(error) {
+        console.log(error.message);
         setPosts([]);
       },
     });
-  }, [togglePost]);
+  }, [togglePost, user]);
 
   const displayPosts = () => {
     if (posts.length > 0) {
@@ -77,15 +83,17 @@ const Posts = ({ user }: PostsProps) => {
           const postDocs = mapToDocumentData<Omit<Post, "id">>(data.docs);
           const posts = mapToPost(postDocs);
           setPosts((pre) => [...pre, ...posts]);
-          if (posts.length !== LIMIT_PAGE) {
+          if (posts.length <= LIMIT_PAGE) {
             setEndpage(true);
             return;
           }
           localStorage.setItem("page", page.toString());
-        }
+        },
       });
     }
   };
+
+  console.log(endPage);
 
   return (
     <Fragment>

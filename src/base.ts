@@ -11,5 +11,8 @@ export interface Post {
   postImage: string | null;
   createdAt: Date;
   updatedAt: Date;
-  createdBy: User;
+  userId: string;
+  userPhotoURL: string | null | undefined;
+  userDisplayName: string;
+  userEmail: string;
 }

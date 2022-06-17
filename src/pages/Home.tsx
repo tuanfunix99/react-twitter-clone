@@ -8,6 +8,8 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { handleDisplayName } from "../utils/handle";
 import { useTransaction } from "react-hooks-firebase-v9";
 import { User } from "../base";
+import { ToastContainer } from "react-toastify";
+import Widgets from "../components/Widgets";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -31,12 +33,13 @@ const Home = () => {
           }
           const doc = createDocRef("users", data.uid);
           const docData = await firestore.getDoc(doc);
-          const { data: user, id } = firestore.convertToDocumentData<User>(docData);
+          const { data: user, id } =
+            firestore.convertToDocumentData<User>(docData);
           setUser({
             uid: id,
             displayName: handleDisplayName(user.displayName as string),
             photoURL: user.photoURL ? user.photoURL : null,
-            email: user?.email
+            email: user?.email,
           });
         }
       },
@@ -48,13 +51,17 @@ const Home = () => {
 
   return (
     <Fragment>
+      <ToastContainer />
       {loading && <LoadingPage />}
-      <main className="bg-black flex max-w-[1500px] mx-auto h-full">
-        <Sidebar user={user} />
-        <Routes>
-          <Route path="/" element={<Feed user={user} />} />
-        </Routes>
-      </main>
+      {!loading && (
+        <main className="bg-black flex max-w-[1500px] mx-auto h-full">
+          <Sidebar user={user} />
+          <Routes>
+            <Route path="/" element={<Feed user={user} />} />
+          </Routes>
+          <Widgets />
+        </main>
+      )}
     </Fragment>
   );
 };

@@ -63,9 +63,12 @@ const Input = ({ user }: InputProps) => {
         const collection = createCollection("posts");
         const newDoc = {
           tweet,
-          createdBy: user!,
           createdAt: new Date(),
           updatedAt: new Date(),
+          userId: user?.uid,
+          userPhotoURL: user?.photoURL,
+          userDisplayName: user?.displayName,
+          userEmail: user?.email,
         };
         const postDoc = await firestore.addDoc(collection, newDoc);
         let downloadURL: any = null;
@@ -136,7 +139,7 @@ const Input = ({ user }: InputProps) => {
         </div>
 
         <div className="flex items-center justify-between pt-2.5">
-          <div className="flex items-center">
+          <div className="flex items-center relative">
             <div
               className="icon"
               onClick={() => filePickerRef.current?.click()}
@@ -167,12 +170,13 @@ const Input = ({ user }: InputProps) => {
             {showEmojis && (
               <Picker
                 onSelectEmoji={(emoji: string) => onSelectEmojiHandler(emoji)}
+                className="absolute top-10 left-0"
               />
             )}
           </div>
           <button
             className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] disabled:opacity-50 disabled:cursor-default"
-            disabled={loading || !tweet}
+            disabled={loading || !tweet?.trim()}
             onClick={onPostHandler}
           >
             {loading && (
